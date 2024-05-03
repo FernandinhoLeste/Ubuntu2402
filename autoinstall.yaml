@@ -16,9 +16,6 @@ autoinstall:
     - name: gtk-common-themes
     - name: snap-store
     - name: snapd-desktop-integration
-    - name: google-chrome-stable
-    - name: wget
-    - name: curl	
 
   # User creation can occur in one of 3 ways:
   # 1. Create a user using this `identity` section.
@@ -26,7 +23,7 @@ autoinstall:
   #    which means this single-user identity section may be removed.
   # 3. Prompt for user configuration on first boot.  Remove this identity
   #    section and see the "Installation without a default user" section.
-    identity:
+  identity:
     realname: ''
     username: ubuntu
     # A password hash is needed. `mkpasswd --method=SHA-512` can help.
@@ -90,9 +87,9 @@ autoinstall:
 
     # A postinstall script may optionally be used for further install
     # customization. Deploy this postinstall.sh script on the webserver.
-    - wget -O /target/postinstall.sh https://raw.githubusercontent.com/FernandinhoLeste/Ubuntu2402/main/postinstall.sh
-    - curtin in-target -- bash /postinstall.sh
-    - rm /target/postinstall.sh
+    # - wget -O /target/postinstall.sh http://192.168.0.2/postinstall.sh
+    # - curtin in-target -- bash /postinstall.sh
+    # - rm /target/postinstall.sh
 
   # Additional cloud-init configuration affecting the target
   # system can be supplied underneath a user-data section inside of
