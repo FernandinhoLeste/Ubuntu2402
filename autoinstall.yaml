@@ -1,7 +1,7 @@
 # Arquivo de configuração para instalação do Ubuntu com Netskope e Falcon Sensor
 
 install:
-  version: "20.04"
+  version: "24.04"
   language: pt_BR
   keyboard: br
   timezone: America/Sao_Paulo
