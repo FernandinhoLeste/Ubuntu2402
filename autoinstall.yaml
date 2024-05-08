@@ -34,8 +34,19 @@ autoinstall:
   # Subiquity will, by default, configure a partition layout using LVM.
   # The 'direct' layout method shown here will produce a non-LVM result.
   storage:
-    layout:
-      name: direct
+        config:
+      # Use the whole disk /dev/sda for installation
+      - id: disk-sda
+        type: disk
+        ptable: gpt
+        path: /dev/sda
+
+      # Create a single partition on the disk using 100% of the space
+      - id: part-0
+        type: partition
+        device: disk-sda
+        size: 100%
+
 
   # Ubuntu Desktop uses the hwe flavor kernel by default.
   early-commands:
