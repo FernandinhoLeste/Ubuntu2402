@@ -3,7 +3,7 @@ autoinstall:
   # version is an Autoinstall required field.
   version: 1
   
-  interactive-sections:
+interactive-sections:
     - identity
 
   # This adds the default ubuntu-desktop packages to the system.
