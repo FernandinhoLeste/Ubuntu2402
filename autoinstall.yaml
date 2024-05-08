@@ -24,11 +24,11 @@ autoinstall:
   # 3. Prompt for user configuration on first boot.  Remove this identity
   #    section and see the "Installation without a default user" section.
   identity:
-    realname: ''
+    realname: 'fernando'
     username: ubuntu
     # A password hash is needed. `mkpasswd --method=SHA-512` can help.
     # mkpasswd can be found in the package 'whois'
-    password: '<password hash>'
+    password: 'Nando@123'
     hostname: ubuntu-desktop
 
   # Subiquity will, by default, configure a partition layout using LVM.
