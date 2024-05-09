@@ -72,7 +72,7 @@ autoinstall:
     - type: lvm_partition
       id: lvm-partition
       device: disk0
-      encryption_key: $ENCRYPTION_PASSPHRASE
+      encryption_key: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
       encryption: aes-xts-plain64
       lvm:
         name: ubuntu-vg
