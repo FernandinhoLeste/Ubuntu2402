@@ -34,52 +34,64 @@ autoinstall:
   # Subiquity will, by default, configure a partition layout using LVM.
   # The 'direct' layout method shown here will produce a non-LVM result.
   storage:
+  storage:
   layout:
-    name: lvm  # Alterado para usar LVM
+    name: direct
   config:
-    - type: disk
-      id: disk0
-      ptable: gpt
-      name: ''
+    - id: disk0
+      type: disk
       wipe: superblock
+      ptable: gpt
+      path: /dev/sda
       grub_device: true
       preserve: false
-      auto_partition: true
-      encryption_key: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
-      partitions:
-        - id: boot
-          size: 512M
-          type: partition
-          device: disk0
-          flag: boot
-          format: zfs
-          zfs:
-            version: 1
-            pool: rpool
-            layout: mirror
-            vdevs: 2
-        - id: root
-          size: 1G
-          type: partition
-          device: disk0
-          flag: ''
-          format: zfs
-          zfs:
-            version: 1
-            pool: rpool
-            layout: mirror
-            vdevs: 2
-    - type: lvm_partition
-      id: lvm-partition
+    - id: disk0p1
+      type: partition
+      size: 536870912 # 512 MiB
       device: disk0
-      encryption_key: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
-      encryption: aes-xts-plain64
-      lvm:
-        name: ubuntu-vg
-        logical_volumes:
-          - name: root
-            size: 100%FREE
-            mount: /
+      flag: boot
+    - id: disk0p2
+      type: partition
+      device: disk0
+      size: -1
+      number: 2
+  filesystems:
+    - id: bpool
+      type: zfs
+      volume: bpool
+      pool: bpool
+      mount:
+        path: /boot
+    - id: rpool
+      type: zfs
+      volume: rpool
+      pool: rpool
+      mount:
+        path: /
+      encryption:
+        cipher: aes-256-gcm
+        pbkdf: argon2id
+        key-rotation-interval: 0s
+      source:
+        devices:
+          - disk0p2
+    - id: swap
+      type: zfs
+      volume: swap
+      pool: rpool
+      mount:
+        path: none
+        swap: true
+        size: 4G
+  pools:
+    - name: bpool
+      config:
+        - source: disk0p1
+          partition: true
+    - name: rpool
+      config:
+        - source: disk0p2
+          encryption: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
 
 
   # Ubuntu Desktop uses the hwe flavor kernel by default.
