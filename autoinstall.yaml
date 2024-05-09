@@ -1,112 +1,36 @@
 #cloud-config
-autoinstall:
-  # version is an Autoinstall required field.
-  version: 1
-  
-interactive-sections:
-    - identity
+instalação automática:
+    versão: 1
 
-  # This adds the default ubuntu-desktop packages to the system.
-  # Any desired additional packages may also be listed here.
-  packages:
-    - ubuntu-desktop
+localidade: pt_BR
+teclado:
+    layout: br
+    variante: ""
 
-  # This adds the default snaps found on a 22.04 Ubuntu Desktop system.
-  # Any desired additional snaps may also be listed here.
-  snaps:
-    - name: firefox
-    - name: gnome-3-38-2004
-    - name: gtk-common-themes
-    - name: snap-store
-    - name: snapd-desktop-integration
+armazenar:
+    disposição:
+        nome: lvm
+        tamanho: auto  # Define o tamanho da partição como "auto" para usar todo o espaço disponível
 
-  # User creation can occur in one of 3 ways:
-  # 1. Create a user using this `identity` section.
-  # 2. Create users as documented in cloud-init inside the user-data section,
-  #    which means this single-user identity section may be removed.
-  # 3. Prompt for user configuration on first boot.  Remove this identity
-  #    section and see the "Installation without a default user" section.
-  identity:
-    realname: 'fernando'
-    username: ubuntu
-    # A password hash is needed. `mkpasswd --method=SHA-512` can help.
-    # mkpasswd can be found in the package 'whois'
-    password: 'Nando@123'
-    hostname: ubuntu-desktop
+identidade:
+    nome do host: Nomad
+    nome de usuário: Nomad
+    senha: 1865a77e7cae167328b6728831677d0a3c013a5bc38f4cb490033199a1c32644d09b63e7e99928e6085e8e68c7ac649d55e082de5e5386c851df270d5e8472a6
 
-  # Subiquity will, by default, configure a partition layout using LVM.
-  # The 'direct' layout method shown here will produce a non-LVM result.
-  storage:
-        config:
-      # Use the whole disk /dev/sda for installation
-      - id: disk-sda
-        type: disk
-        ptable: gpt
-        path: /dev/sda
+instantâneos:
+    - nome: vá
+      canal: 1,20/estável
+      clássico: verdadeiro
 
-      # Create a single partition on the disk using 100% of the space
-      - id: part-0
-        type: partition
-        device: disk-sda
-        size: 100%
+seleções debconf: |
+    bind9 bind9/run-resolvconf booleano falso
 
+pacotes:
+    - libreoffice
+    - bind9  # Corrigido para instalar o servidor DNS Bind9
 
-  # Ubuntu Desktop uses the hwe flavor kernel by default.
-  early-commands:
-    - echo 'linux-generic-hwe-22.04' > /run/kernel-meta-package
+dados do usuário:
+    desativar_root: falso
 
-  # The live-server ISO does not contain some of the required packages,
-  # such as ubuntu-desktop or the hwe kernel (or most of their depdendencies).
-  # The system being installed will need some sort of apt access.
-  # proxy: http://192.168.0.1:3142
-
-  late-commands:
-    # Enable the boot splash
-    - >-
-      curtin in-target --
-      sed -i /etc/default/grub -e
-      's/GRUB_CMDLINE_LINUX_DEFAULT=".*/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"/'
-    - curtin in-target -- update-grub
-
-    # Let NetworkManager handle network
-    - rm /target/etc/netplan/00-installer-config*yaml
-    - >-
-      printf "network:\n  version: 2\n  renderer: NetworkManager"
-      > /target/etc/netplan/01-network-manager-all.yaml
-
-    # Remove default filesystem and related tools not used with the suggested
-    # 'direct' storage layout.  These may yet be required if different
-    # partitioning schemes are used.
-    - >-
-      curtin in-target -- apt-get remove -y
-      btrfs-progs cryptsetup* lvm2 xfsprogs
-
-    # Remove other packages present by default in Ubuntu Server but not
-    # normally present in Ubuntu Desktop.
-    - >-
-      curtin in-target -- apt-get remove -y
-      ubuntu-server ubuntu-server-minimal
-      binutils byobu curl dmeventd finalrd gawk
-      kpartx mdadm ncurses-term needrestart open-iscsi openssh-server
-      sg3-utils ssh-import-id sssd thin-provisioning-tools vim tmux
-      sosreport screen open-vm-tools motd-news-config lxd-agent-loader
-      landscape-common htop git fonts-ubuntu-console ethtool
-
-    # Keep cloud-init, as it performs some of the installation on first boot.
-    - curtin in-target -- apt-get install -y cloud-init
-
-    # Finally, remove things only installed as dependencies of other things
-    # we have already removed.
-    - curtin in-target -- apt-get autoremove -y
-
-    # A postinstall script may optionally be used for further install
-    # customization. Deploy this postinstall.sh script on the webserver.
-    # - wget -O /target/postinstall.sh http://192.168.0.2/postinstall.sh
-    # - curtin in-target -- bash /postinstall.sh
-    # - rm /target/postinstall.sh
-
-  # Additional cloud-init configuration affecting the target
-  # system can be supplied underneath a user-data section inside of
-  # autoinstall.
-  # user-data:
-  #   …
+comandos tardios:
+    - sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=30/' /target/etc/default/grub  # Corrigido para sed -i
