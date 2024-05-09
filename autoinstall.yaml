@@ -33,7 +33,8 @@ autoinstall:
 
   # Subiquity will, by default, configure a partition layout using LVM.
   # The 'direct' layout method shown here will produce a non-LVM result.
-  storage:
+  # Definições gerais
+storage:
   layout:
     name: direct
   config:
@@ -52,7 +53,7 @@ autoinstall:
     - id: disk0p2
       type: partition
       device: disk0
-      size: -1
+      size: 241G # aproximadamente 245 GB
       number: 2
   filesystems:
     - id: bpool
