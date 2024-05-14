@@ -19,6 +19,18 @@ autoinstall:
   packages:
     - vim
   late-commands:
+    # Verifica a integridade do arquivo NotoSerifCJK-Bold.ttc antes de copiá-lo
+    - curtin in-target -- wget -qO /tmp/font_checksum https://example.com/NotoSerifCJK-Bold.ttc.md5
+    - curtin in-target -- cd /tmp
+    - curtin in-target -- md5sum -c --status /tmp/font_checksum || exit 1
+    
+    # Tenta copiar os arquivos novamente após um erro de leitura/saída
+    - curtin in-target -- while ! rsync -aXHAS --one-file-system /tmp/tmpicrgpg11/mount/ /target; do sleep 5; done
+    
+    # Lidar com erro de entrada/saída durante a cópia de snaps
+    - curtin in-target -- while ! rsync -aXHAS --one-file-system /var/lib/snapd/seed/snaps/gnome-42-2204_176.snap /target/var/lib/snapd/seed/snaps/; do sleep 5; done
+    
+    # Instalar ProtonVPN
     - curtin in-target -- wget https://repo2.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.3-3_all.deb
     - curtin in-target -- dpkg -i ./protonvpn-stable-release_1.0.3-3_all.deb
     - curtin in-target -- apt update
