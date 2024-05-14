@@ -5,8 +5,67 @@ autoinstall:
     username: local-optimum
     password: "$6$ZE4WV3QRJhPUnsNv$BpkTBYjUOxOiWV5sNPYDSitTwxW.3NHLmhRqptzpa8a4KTxGpkvMaSDbyq4PVri9kdpD1t7ldUBgwB6uveObg."
   storage:
-    layout:
-      name: lvm
+    config:
+      - id: disk-sda
+        type: disk
+        ptable: gpt
+        path: /dev/sda
+        wipe: superblock
+        preserve: false
+        name: main_disk
+        grub_device: true
+      - id: partition-0
+        type: partition
+        device: disk-sda
+        size: 1M
+        flag: bios_grub
+        number: 1
+        preserve: false
+      - device: disk-sda
+        size: 1G
+        wipe: superblock
+        flag: ''
+        number: 2
+        preserve: false
+        type: partition
+        id: partition-1
+      - fstype: ext4
+        volume: partition-1
+        preserve: false
+        type: format
+        id: format-0
+      - device: disk-sda
+        size: -1
+        wipe: superblock
+        flag: ''
+        number: 3
+        preserve: false
+        type: partition
+        id: partition-2
+      - name: <CUSTOM VG NAME HERE>
+        devices: [partition-2]
+        preserve: false
+        type: lvm_volgroup
+        id: lvm_volgroup-0
+      - name: <CUSTOM LV NAME HERE>
+        volgroup: lvm_volgroup-0
+        size: -1
+        preserve: false
+        type: lvm_partition
+        id: lvm_partition-0
+      - fstype: ext4
+        volume: lvm_partition-0
+        preserve: false
+        type: format
+        id: format-1
+      - device: format-1
+        path: /
+        type: mount
+        id: mount-1
+      - device: format-0
+        path: /boot
+        type: mount
+        id: mount-0
   snaps:
     - name: spotify
       classic: false
