@@ -47,14 +47,6 @@ storage:
       pool: rpool
       mount:
         path: /
-      encryption: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
-      cipher: aes-256-gcm
-      pbkdf: argon2id
-      pbkdf-config:
-        key-rotation-interval: 0s
-      source:
-        devices:
-          - disk0p2
     - id: swap
       type: zfs
       volume: swap
@@ -71,7 +63,6 @@ storage:
     - name: rpool
       config:
         - source: disk0p2
-          encryption: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0
   early-commands:
     - echo 'linux-generic-hwe-22.04' > /run/kernel-meta-package
   late-commands:
