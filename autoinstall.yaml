@@ -17,6 +17,7 @@ autoinstall:
   locale: pt_BR
   keyboard:
     layout: pt_BR
+    variant: ''
   network:
     network:
       version: 2
