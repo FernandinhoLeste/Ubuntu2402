@@ -16,7 +16,7 @@ autoinstall:
     - python3-pip               # mais um pacote
   locale: pt_BR
   keyboard:
-    layout: pt_BR
+    layout: br
     variant: ''
   network:
     network:
