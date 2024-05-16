@@ -1,96 +1,25 @@
+#cloud-config
 autoinstall:
   version: 1
   identity:
-    hostname: ubuntu-desktop
-    username: local-optimum
-    password: "$6$ZE4WV3QRJhPUnsNv$BpkTBYjUOxOiWV5sNPYDSitTwxW.3NHLmhRqptzpa8a4KTxGpkvMaSDbyq4PVri9kdpD1t7ldUBgwB6uveObg."
-  storage:
-    config:
-      - id: disk-sda
-        type: disk
-        ptable: gpt
-        path: /dev/sda
-        wipe: superblock
-        preserve: false
-        name: main_disk
-        grub_device: true
-      - id: partition-0
-        type: partition
-        device: disk-sda
-        size: 1M
-        flag: bios_grub
-        number: 1
-        preserve: false
-      - device: disk-sda
-        size: 1G
-        wipe: superblock
-        flag: ''
-        number: 2
-        preserve: false
-        type: partition
-        id: partition-1
-      - fstype: ext4
-        volume: partition-1
-        preserve: false
-        type: format
-        id: format-0
-      - device: disk-sda
-        size: -1
-        wipe: superblock
-        flag: ''
-        number: 3
-        preserve: false
-        type: partition
-        id: partition-2
-      - name: <CUSTOM VG NAME HERE>
-        devices: [partition-2]
-        preserve: false
-        type: lvm_volgroup
-        id: lvm_volgroup-0
-      - name: <CUSTOM LV NAME HERE>
-        volgroup: lvm_volgroup-0
-        size: -1
-        preserve: false
-        type: lvm_partition
-        id: lvm_partition-0
-      - fstype: ext4
-        volume: lvm_partition-0
-        preserve: false
-        type: format
-        id: format-1
-      - device: format-1
-        path: /
-        type: mount
-        id: mount-1
-      - device: format-0
-        path: /boot
-        type: mount
-        id: mount-0
-  snaps:
-    - name: spotify
-      classic: false
-    - name: telegram-desktop
-      classic: false
-    - name: obsidian
-      classic: true
-    - name: code
-      classic: true
+    hostname: ubuntu2402
+    username: usuarioubuntu
+    password: $6$saltsalt$M8TwNCHWfwujBnGKtY3y4H42n3ak8fpM6LUKLGmesj3LDKVNaYIH9HetLApg3k9gUVpi99HX.wEjt3hACVy1/0  
+  ssh:
+    install-server: true
+    allow-pw: true
   packages:
-    - vim
-  late-commands:
-    # Verifica a integridade do arquivo NotoSerifCJK-Bold.ttc antes de copiá-lo
-    - curtin in-target -- wget -qO /tmp/font_checksum https://example.com/NotoSerifCJK-Bold.ttc.md5
-    - curtin in-target -- cd /tmp
-    - curtin in-target -- md5sum -c --status /tmp/font_checksum || exit 1
-    
-    # Tenta copiar os arquivos novamente após um erro de leitura/saída
-    - curtin in-target -- while ! rsync -aXHAS --one-file-system /tmp/tmpicrgpg11/mount/ /target; do sleep 5; done
-    
-    # Lidar com erro de entrada/saída durante a cópia de snaps
-    - curtin in-target -- while ! rsync -aXHAS --one-file-system /var/lib/snapd/seed/snaps/gnome-42-2204_176.snap /target/var/lib/snapd/seed/snaps/; do sleep 5; done
-    
-    # Instalar ProtonVPN
-    - curtin in-target -- wget https://repo2.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.3-3_all.deb
-    - curtin in-target -- dpkg -i ./protonvpn-stable-release_1.0.3-3_all.deb
-    - curtin in-target -- apt update
-    - curtin in-target -- apt install -y proton-vpn-gnome-desktop
+    - build-essential
+    - htop
+    - git                       # adicione o nome do pacote aqui
+    - python3                   # outro pacote para adicionar
+    - python3-pip               # mais um pacote
+  locale: pt_BR
+  keyboard:
+    layout: pt_BR
+  network:
+    network:
+      version: 2
+      ethernets:
+        enp0s3:
+          dhcp4: true
