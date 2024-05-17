@@ -3,8 +3,8 @@ autoinstall:
   version: 1
   identity:
     hostname: nomad-000
-    username: 
-    password: $6$saltsalt$M8TwNCHWfwujBnGKtY3y4H42n3ak8fpM6LUKLGmesj3LDKVNaYIH9HetLApg3k9gUVpi99HX.wEjt3hACVy1/0  
+    username: nomad
+    password: $y$j9T$fE6zLV7uFhbwKXP4fWTSe/$BBMaCcnBVZnuJVW3BwnNsFFuc0iMzWqiNpwYsyxvpp0 
   ssh:
     install-server: true
     allow-pw: true
@@ -13,6 +13,7 @@ autoinstall:
     - git                       
     - python3                   
     - python3-pip
+    - wget  # Adiciona o wget à lista de pacotes a serem instalados
   locale: pt_BR
   keyboard:
     layout: br
@@ -23,13 +24,13 @@ autoinstall:
       ethernets:
         enp0s3:
           dhcp4: true
-      wifis:
-        wlp0s20f3:          # Substitua pelo nome da sua interface wifi
-          dhcp4: true
-          dhcp6: false
-          access-points:
-            "Nmd_Guest":   # Substitua pelo nome da sua rede
-              password: "nomad2023@@@@" # Substitua pela senha da sua rede
+      
   snaps:
     - name: slack
       classic: true
+  runcmd:
+    - wget https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.6.0-1_amd64.deb
+    - sudo WAZUH_MANAGER='starwatch.benomad-sec.internal' WAZUH_AGENT_GROUP='LNX_EndUsers' dpkg -i ./wazuh-agent_4.6.0-1_amd64.deb
+    - sudo systemctl daemon-reload
+    - sudo systemctl enable wazuh-agent
+    - sudo systemctl start wazuh-agent
