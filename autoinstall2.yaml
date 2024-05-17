@@ -2,8 +2,8 @@
 autoinstall:
   version: 1
   identity:
-    hostname: ubuntu2402
-    username: usuarioubuntu
+    hostname: nomad-000
+    username: 
     password: $6$saltsalt$M8TwNCHWfwujBnGKtY3y4H42n3ak8fpM6LUKLGmesj3LDKVNaYIH9HetLApg3k9gUVpi99HX.wEjt3hACVy1/0  
   ssh:
     install-server: true
@@ -12,7 +12,7 @@ autoinstall:
     - build-essential
     - git                       
     - python3                   
-    - python3-pip               
+    - python3-pip
   locale: pt_BR
   keyboard:
     layout: br
@@ -24,9 +24,12 @@ autoinstall:
         enp0s3:
           dhcp4: true
       wifis:
-        wlan0:          # Substitua pelo nome da sua interface wifi
+        wlp0s20f3:          # Substitua pelo nome da sua interface wifi
           dhcp4: true
           dhcp6: false
           access-points:
             "Nmd_Guest":   # Substitua pelo nome da sua rede
               password: "nomad2023@@@@" # Substitua pela senha da sua rede
+  snaps:
+    - name: slack
+      classic: true
