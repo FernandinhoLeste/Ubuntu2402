@@ -10,7 +10,6 @@ autoinstall:
     allow-pw: true
   packages:
     - build-essential
-    - htop
     - git                       # adicione o nome do pacote aqui
     - python3                   # outro pacote para adicionar
     - python3-pip               # mais um pacote
