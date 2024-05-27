@@ -31,9 +31,8 @@ autoinstall:
       classic: true
       
   late-commands:
-    - wget -O /tmp/postinstall.sh https://raw.githubusercontent.com/FernandinhoLeste/Ubuntu2402/main/postinstall.sh
-    - chmod +x /tmp/postinstall.sh
-    - sudo bash /tmp/postinstall.sh
-    - rm /tmp/postinstall.sh
+    - wget -O /target/postinstall.sh https://raw.githubusercontent.com/FernandinhoLeste/Ubuntu2402/main/postinstall.sh
+    - curtin in-target -- bash /postinstall.sh
+    - rm /target/postinstall.sh
     
     
