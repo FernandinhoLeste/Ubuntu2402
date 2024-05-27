@@ -11,9 +11,6 @@ autoinstall:
   packages:
     - build-essential
     - git
-    - libwebkit2gtk-4.0-37
-    - libgtk-3-0
-    - libappindicator3-1
     - python3
     - python3-pip
     - wget
