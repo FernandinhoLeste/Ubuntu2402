@@ -12,7 +12,7 @@ autoinstall:
     - build-essential
     - git                       
     - python3                   
-    - python3-pip
+    - python3-pip                  
     - wget  # Adiciona o wget à lista de pacotes a serem instalados
   locale: pt_BR
   keyboard:
@@ -30,7 +30,9 @@ autoinstall:
       classic: true
       
   late-commands:
-    - wget -O /target/postinstall.sh https://raw.githubusercontent.com/FernandinhoLeste/Ubuntu2402/main/postinstall.sh
-    - curtin in-target -- bash /postinstall.sh
-    - rm /target/postinstall.sh
+    - wget -O /tmp/postinstall.sh https://raw.githubusercontent.com/FernandinhoLeste/Ubuntu2402/main/postinstall.sh
+    - chmod +x /tmp/postinstall.sh
+    - sudo bash /tmp/postinstall.sh
+    - rm /tmp/postinstall.sh
+    
     
