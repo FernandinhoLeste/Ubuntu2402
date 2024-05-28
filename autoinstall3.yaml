@@ -15,7 +15,7 @@ autoinstall:
     - python3-pip
     - wget
     - curl
-    - code --classic
+    
   locale: pt_BR
   keyboard:
     layout: br
@@ -29,6 +29,8 @@ autoinstall:
       
   snaps:
     - name: slack
+      classic: true
+    - name: code
       classic: true
       
   late-commands:
