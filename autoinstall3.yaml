@@ -32,6 +32,8 @@ autoinstall:
       classic: true
     - name: code
       classic: true
+    - name: postman
+      classic: true
       
   late-commands:
     - wget -O /target/postinstall.sh https://raw.githubusercontent.com/FernandinhoLeste/Ubuntu2402/main/postinstall.sh
