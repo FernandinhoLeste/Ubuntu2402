@@ -2,7 +2,7 @@
 autoinstall:
   version: 1
   identity:
-    hostname: nomad-000
+    hostname: nomadtesteubuntu
     username: nomad
     password: $y$j9T$fE6zLV7uFhbwKXP4fWTSe/$BBMaCcnBVZnuJVW3BwnNsFFuc0iMzWqiNpwYsyxvpp0 
   ssh:
